@@ -60,18 +60,12 @@ class ElectricityClass {
                 }
             }
 
-            let type_ = "";
-            if(this.isProd()){
-                if(!type) throw Error("meter type is missing")
-                type_ = type
-            }else{
-                type_ = type ? type : "prepaid"
-            }
-
+            if(!type) throw Error("meter type is missing")
+            
             const url = `${await this.url()}/merchant-verify`;
             
             // handle buy airtime
-            return verifyMeterNumber(billersCode_, serviceID, type_, url, this.username, this.password)
+            return verifyMeterNumber(billersCode_, serviceID, type, url, this.username, this.password)
         }
         catch(err){
             throw err
@@ -79,7 +73,7 @@ class ElectricityClass {
     }
 
      // New Product Purchase (post request). This allows you to recharge a DSTV decoder afresh / change the existing bouquet of a DSTV decoder using its smartcard number (billersCode).
-     buy = async function({request_id=randomString(), serviceID, billersCode, variation_code, amount, phone, quantity }){
+     buy = async function({request_id=randomString(), serviceID, number, type, amount, phone }){
         try{
 
             await this.validateAuth()
@@ -89,36 +83,26 @@ class ElectricityClass {
 
             let billersCode_ = "";
             if(this.isProd()){
-                if(!billersCode) throw Error("billersCode is missing")
-               billersCode_ = billersCode
-            }else{
-                billersCode_ = billersCode ? billersCode : "1212121212"
+                if(!number) throw Error("billersCode (meter number) is missing")
+               billersCode_ = number
+            }
+            if(type == 'postpaid'){
+                billersCode_ = number ? number : "1010101010101"
+            }
+            else{
+                billersCode_ = number ? number : "1111111111111"
             }
 
-            let variation_code_ = "";
+            if(!type) throw Error("meter type is missing")
+
+            let amount_ = "";
             if(this.isProd()){
-                if(!variation_code) throw Error("variation_code is missing")
-                variation_code_ = variation_code
+                if(!amount) throw Error("amount is missing")
+                amount_ = amount
             }else{
-                if(variation_code){
-                    variation_code_ = variation_code
-                }
-                else{
-                    if(serviceID === 'gotv'){
-                        variation_code_ = "gotv-jolli"
-                    }
-                    if(serviceID === 'dstv'){
-                        variation_code_ = "confam-extra"
-                    }
-                    if(serviceID === 'startimes'){
-                        variation_code_ = "nova"
-                    } if(serviceID === 'showmax'){
-                        variation_code_ = "full"
-                    }
-                    
-                }
+                amount_ = amount ? amount : 900
             }
-
+            
             let phone_ = "";
             if(this.isProd()){
                 if(!phone) throw Error("phone number is missing")
@@ -126,13 +110,11 @@ class ElectricityClass {
             }else{
                 phone_ = phone ? phone : "08011111111"
             }
-               
-            const subscription_type = "change"
 
             const url = `${await this.url()}/pay`;
             
             // handle buy airtime
-            return buy(request_id, serviceID, billersCode_, variation_code_, subscription_type, amount, phone_, quantity, url, this.username, this.password)
+            return buy(request_id, serviceID, billersCode_, type, amount_, phone_, url, this.username, this.password)
         }
         catch(err){
             throw err
