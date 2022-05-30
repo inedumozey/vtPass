@@ -6,7 +6,7 @@ const EducationClass = require("../services/education/EducationClass")
 
 class Vtpass {
     constructor({environment, env, username="", password="" }){
-        this.electricityairtime = new AirtimeClass(environment, env, username, password)
+        this.airtime = new AirtimeClass(environment, env, username, password)
         this.data = new DataClass(environment, env, username, password)
         this.tv = new TvClass(environment, env, username, password)
         this.electricity = new ElectricityClass(environment, env, username, password)
