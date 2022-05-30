@@ -2,7 +2,7 @@
   "name": "@mozeyinedu/vtpass",
   "version": "0.1.0",
   "description": "",
-  "main": "src/lib/index.js",
+  "main": "test/test.js",
   "scripts": {
     "start": "nodemon main"
   },
