@@ -1,4 +1,4 @@
-const check = require("./check")
+const view = require("./view")
 const sandboxApi = "https://sandbox.vtpass.com/api";
 const liveApi = "https://vtpass.com/api";
 
@@ -36,14 +36,14 @@ class dataClass {
     }
 
     //check transactions
-    check= async function(){
+    view= async function(){
         try{
             await this.validateAuth()
 
-            const url = `${await this.url()}/balance`;
+            const url = `${await this.url()}/service-categories`;
             
             // handle buy airtime
-            return check( url, this.username, this.password)
+            return view( url, this.username, this.password)
         }
         catch(err){
             throw err
