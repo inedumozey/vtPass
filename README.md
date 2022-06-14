@@ -5,7 +5,7 @@
 ```
     const VtPass = require("@mozeyinedu/vtpass");
 
-    const vtpass = new VtPass({env: 'dev', username: process.env.USERNAME, password: process.env.PASSWORD )
+    const vtpass = new VtPass({env: 'dev', username: process.env.USERNAME, password: process.env.PASSWORD })
 
     async function run(){
         try{
